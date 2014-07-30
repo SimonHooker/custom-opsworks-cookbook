@@ -26,8 +26,8 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  if deploy[:mosaic] == false
-    Chef::Log.debug("Skipping deploy::java application #{application} as it is not a Mosaic app")
+  if deploy[:mycustomcookbook] == false
+    Chef::Log.debug("Skipping deploy::java application #{application} as it is not a mycustomcookbook app")
     next
   end
 

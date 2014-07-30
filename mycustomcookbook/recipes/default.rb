@@ -1,1 +1,1 @@
-include_recipe "mosaic::gulp_config"
+include_recipe "mycustomcookbook::gulp_config"
