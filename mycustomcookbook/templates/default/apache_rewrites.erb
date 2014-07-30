@@ -8,9 +8,3 @@ RewriteRule /gallery/(.*)$ <%= @deploy['mappings']['s3']['read'] %>gallery/$1 [Q
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} !(.*)/$
 RewriteRule ^(.*)$ $1/ [QSA,L,R=301]
-
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-l
-RewriteCond %{REQUEST_URI} !^/(railo-(context|server-context))|mppa|s3/ [NC]
-RewriteRule /.*$ /404_handler.cfm?redirect_url=%{REQUEST_FILENAME}&%{QUERY_STRING} [PT,L]

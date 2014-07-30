@@ -37,16 +37,11 @@ node[:deploy].each do |application, deploy|
     })
   end
 
-  # configure mycustomcookbook write-required folders ( based off hgignore and /newInstall/index.php )
+  # configure mycustomcookbook write-required folders
   [
-    "/site_assets/cache",
-    "/scheduled_tasks/output",
-    "/data",
-    "/portal/temp",
-    "/temp",
-    "/portal/audit/processors",
-    "/portal/privilages/processors",
-    "/list_files"
+    "/writabledir1",
+    "/writabledir2",
+    "/writabledir3/subdir1"
   ].each do |writableFolder|
     directory "#{deploy[:absolute_document_root]}#{writableFolder}" do
       owner "#{node[:railo][:user][:id]}"
@@ -58,8 +53,9 @@ node[:deploy].each do |application, deploy|
 
   # configure mycustomcookbook write-required files
   [
-    "/sitemap.xml",
-    "/robots.txt"
+    "/writableFile1.xml",
+    "/writableFile2.txt",
+    "/someDir/writableFile3.txt"
   ].each do |writablePath|
     file "#{deploy[:absolute_document_root]}#{writablePath}" do
       action :create
