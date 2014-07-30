@@ -1,0 +1,16 @@
+# If not on SSL then redirect
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [QSA,L]
+
+RewriteRule /assets/(.*)$ <%= @deploy['mappings']['s3']['read'] %>assets/$1 [QSA,L]
+RewriteRule /gallery/(.*)$ <%= @deploy['mappings']['s3']['read'] %>gallery/$1 [QSA,L]
+
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ $1/ [QSA,L,R=301]
+
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_URI} !^/(railo-(context|server-context))|mppa|s3/ [NC]
+RewriteRule /.*$ /404_handler.cfm?redirect_url=%{REQUEST_FILENAME}&%{QUERY_STRING} [PT,L]

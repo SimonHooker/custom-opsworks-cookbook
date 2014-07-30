@@ -1,0 +1,35 @@
+<cfsetting requesttimeout="10000">
+
+<!-- update passwords -->
+<cfadmin
+    action="hasPassword"
+    type="web"
+    returnVariable="hasPassword">
+
+<cfif NOT hasPassword>
+	<!-- only do this if it hasn't been set up yet -->
+	<cftry>
+		<cfadmin 
+			action="updatePassword"
+			type="web"
+			newPassword="<%= node['railo']['web_password'] %>">
+		<cfcatch><cfdump var="#cfcatch#"></cfcatch>
+	</cftry>
+</cfif>
+
+<!-- add some mappings -->
+<% @deploy['mappings'].each do |mappingName, conf| %>
+	<cftry>
+		<cfadmin
+			action="updateMapping"
+			type="web"
+			password="<%= node['railo']['web_password'] %>"
+			virtual="/<%= mappingName %>"
+			physical="<%= conf['write'] %>"
+			archive=""
+			primary="physical"
+			trusted="false"
+			toplevel="false">
+		<cfcatch><cfdump var="#cfcatch#"></cfcatch>
+	</cftry>
+<% end %>
